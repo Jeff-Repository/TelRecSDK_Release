@@ -1,7 +1,9 @@
 #ifndef TELRECTYPE_H
 #define TELRECTYPE_H
 
+#ifdef __cplusplus
 #include <functional>
+#endif
 
 /*Array Length*/
 #define DeviceID_Length         20
@@ -16,7 +18,11 @@
 #define NotesLengthMax          64
 
 /*Event*/
+#ifdef __cplusplus
 enum class TelRec_EventType
+#else
+typedef enum
+#endif
 {
     UpdateProgress,                     /*Data = nullptr,       Length = Progress*/
     FoundDevice,                        /*Data = FoundDevice,   Length = 0*/
@@ -31,8 +37,15 @@ enum class TelRec_EventType
     ChannelMonitorChanged,              /*Data = Channel(Byte), Length = Enabled(bool)*/
     ChannelPlayBackChanged,             /*Data = Channel(Byte), Length = Enabled(bool)*/
     ChannelRecordEnd                    /*Data = Channel(Byte), Length = 0*/
+#ifdef __cplusplus
 };
-typedef std::function<int (TelRec_EventType Event, int Device, unsigned char *Data, int Length)> EventCallBack;
+#else
+}TelRec_EventType;
+#endif
+#ifdef __cplusplus
+typedef std::function<int (TelRec_EventType Event, long Device, unsigned char *Data, int Length)> EventCallBack;
+#endif
+typedef int (*EventCallBack_C)(TelRec_EventType Event, long Device, unsigned char *Data, int Length);
 
 /*Found Device*/
 typedef struct
@@ -46,20 +59,36 @@ typedef struct
 }TelRec_FoundDeviceInfo;
 
 /*Connect Status*/
+#ifdef __cplusplus
 enum class ConnectStatusType
+#else
+typedef enum
+#endif
 {
     NotConnected = 0,
     Connecting,
     Connected
+#ifdef __cplusplus
 };
+#else
+}ConnectStatusType;
+#endif
 
 /*Storage Status*/
+#ifdef __cplusplus
 enum class StorageStatusType
+#else
+typedef enum
+#endif
 {
     NotFound = 0,
     Normal,
     Full
+#ifdef __cplusplus
 };
+#else
+}StorageStatusType;
+#endif
 typedef struct
 {
     int Status;//(StorageStatusType)
@@ -74,7 +103,11 @@ typedef struct
 }TelRec_NetStatus;
 
 /*Channel Status*/
+#ifdef __cplusplus
 enum class PhoneStatusType
+#else
+typedef enum
+#endif
 {
     Lost,
     OnHook,
@@ -85,10 +118,13 @@ enum class PhoneStatusType
     AutoReply,
     VoiceCtrlEnabled,
     VoiceCtrlDisabled,
-    NotSupport,
-    Max,
+    PhoneStatusTypeMax,
     Uninstalled = 255
+#ifdef __cplusplus
 };
+#else
+}PhoneStatusType;
+#endif
 typedef struct
 {
     unsigned char PhoneStatus;//PhoneStatusType

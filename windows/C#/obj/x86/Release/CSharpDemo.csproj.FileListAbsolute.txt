@@ -1,0 +1,9 @@
+E:\Project\TelRec\TelRecSDK_Release\C#\bin\x86\Release\CSharpDemo.exe
+E:\Project\TelRec\TelRecSDK_Release\C#\bin\x86\Release\CSharpDemo.pdb
+E:\Project\TelRec\TelRecSDK_Release\C#\obj\x86\Release\CSharpDemo.csprojAssemblyReference.cache
+E:\Project\TelRec\TelRecSDK_Release\C#\obj\x86\Release\CSharpDemo.Form1.resources
+E:\Project\TelRec\TelRecSDK_Release\C#\obj\x86\Release\CSharpDemo.Properties.Resources.resources
+E:\Project\TelRec\TelRecSDK_Release\C#\obj\x86\Release\CSharpDemo.csproj.GenerateResource.cache
+E:\Project\TelRec\TelRecSDK_Release\C#\obj\x86\Release\CSharpDemo.csproj.CoreCompileInputs.cache
+E:\Project\TelRec\TelRecSDK_Release\C#\obj\x86\Release\CSharpDemo.exe
+E:\Project\TelRec\TelRecSDK_Release\C#\obj\x86\Release\CSharpDemo.pdb
