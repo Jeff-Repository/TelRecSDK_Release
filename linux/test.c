@@ -4,8 +4,9 @@
 
 static bool DeviceFound = false;
 static TelRec_FoundDeviceInfo DeviceInfo;
+static TelRec_ChannelSetting *ChannelSetting_0;
 
-static int SearchDeviceCallBack(TelRec_EventType Event, long Device, unsigned char *Data, int Length)
+static int SearchDeviceCallBack(TelRec_EventType Event, intptr_t Device, unsigned char *Data, int Length)
 {
     
     char DeviceID[DeviceID_Length + 1];
@@ -38,7 +39,7 @@ static int SearchDeviceCallBack(TelRec_EventType Event, long Device, unsigned ch
     }
 }
 
-static int HeartbeatCallBack(TelRec_EventType Event, long Device, unsigned char *Data, int Length)
+static int HeartbeatCallBack(TelRec_EventType Event, intptr_t Device, unsigned char *Data, int Length)
 {
     int channel;
     TelRec_ChannelStatus *Status;
@@ -65,6 +66,10 @@ static int HeartbeatCallBack(TelRec_EventType Event, long Device, unsigned char 
                 PhoneNum[Status->PhoneNumLength] = '\0';
                 printf("Channel:%d, Call Number:%s\n", channel, PhoneNum);
             }
+            if(ChannelSetting_0)
+            {
+                printf("Channel 0 name:%s\n", ChannelSetting_0->ChannelName);
+            }
             break;
         }
         case ChannelPlayBackChanged:
@@ -77,7 +82,7 @@ static int HeartbeatCallBack(TelRec_EventType Event, long Device, unsigned char 
 
 int main()
 {
-    long device = 0;
+    intptr_t device = 0;
 
     TelRecAPI_Init();
 
@@ -94,6 +99,11 @@ int main()
             if(TelRecAPI_C_CreateHeartbeatThread(device, HeartbeatCallBack) == 0)
             {
                 printf("Create Heartbeat Thread Succeed\n");
+            }
+            if(TelRecAPI_GetChannelSetting(device, 0) == 0)
+            {
+                ChannelSetting_0 = TelRecAPI_ChannelSetting(device, 0);
+                printf("Update Channel Setting Succeed\n");
             }
         }
     }

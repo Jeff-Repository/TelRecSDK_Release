@@ -1,6 +1,8 @@
 #ifndef TELRECTYPE_H
 #define TELRECTYPE_H
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 #include <functional>
 #endif
@@ -42,10 +44,11 @@ typedef enum
 #else
 }TelRec_EventType;
 #endif
+
 #ifdef __cplusplus
-typedef std::function<int (TelRec_EventType Event, long Device, unsigned char *Data, int Length)> EventCallBack;
+typedef std::function<int (TelRec_EventType Event, intptr_t Device, unsigned char *Data, int Length)> EventCallBack;
 #endif
-typedef int (*EventCallBack_C)(TelRec_EventType Event, long Device, unsigned char *Data, int Length);
+typedef int (*EventCallBack_C)(TelRec_EventType Event, intptr_t Device, unsigned char *Data, int Length);
 
 /*Found Device*/
 typedef struct
@@ -89,6 +92,7 @@ typedef enum
 #else
 }StorageStatusType;
 #endif
+
 typedef struct
 {
     int Status;//(StorageStatusType)
@@ -106,7 +110,7 @@ typedef struct
 #ifdef __cplusplus
 enum class PhoneStatusType
 #else
-typedef enum
+enum PhoneStatusType
 #endif
 {
     Lost,
@@ -125,6 +129,7 @@ typedef enum
 #else
 }PhoneStatusType;
 #endif
+
 typedef struct
 {
     unsigned char PhoneStatus;//PhoneStatusType
