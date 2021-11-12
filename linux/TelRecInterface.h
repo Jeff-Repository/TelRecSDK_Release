@@ -1,7 +1,7 @@
 #ifndef TELRECINTERFACE_H
 #define TELRECINTERFACE_H
 
-#include "TelRecType.h"
+#include <TelRecType.h>
 
 /*API*/
 #ifdef __cplusplus
@@ -23,6 +23,7 @@ extern "C"
     int TelRecAPI_SetNetAddr(intptr_t Device, const char *IPaddress, unsigned short Port);
     int TelRecAPI_SetUserPassword(intptr_t Device, const char *UserName, int UserNameLength, const char *Password);
     /*Device Info*/
+    const char *TelRecAPI_DeviceID(intptr_t Device);
     const char *TelRecAPI_DeviceModel(intptr_t Device);
     const char *TelRecAPI_FirmwareVersion(intptr_t Device);
     int TelRecAPI_DeviceChannels(intptr_t Device);
@@ -84,6 +85,8 @@ extern "C"
     int TelRecAPI_GetDayListFromMonthDir(intptr_t Device, unsigned char Year, unsigned char Month, unsigned char DayArray[32]);
     int TelRecAPI_EditRecordNotes(intptr_t Device, unsigned short ItemOffset, unsigned char Year, unsigned char Month, unsigned char Day, unsigned char Channel, const char *Notes);
     int TelRecAPI_DeleteRecord(intptr_t Device, RecordDeleteItem *Item);
+    int TelRecAPI_StartMonitor(intptr_t Device, unsigned char Channel);
+    int TelRecAPI_StopMonitor();
     int TelRecAPI_Dial(intptr_t Device, unsigned char Channel, const char *PhoneNum, int PhoneNumLength);
     int TelRecAPI_GetSMDR(intptr_t Device, int *Length, char **Data);
     int TelRecAPI_Reboot(intptr_t Device);
@@ -93,6 +96,10 @@ extern "C"
     int TelRecAPI_SetScheduledRestartSetting(intptr_t Device, TelRec_ScheduledRestartSetting *Setting);
     int TelRecAPI_PlayAudioFile(intptr_t Device, int Channel, const char *FileName);
     int TelRecAPI_OffHook(intptr_t Device, int Channel);
+
+    /*Player*/
+    int TelRecAPI_PlayerSetVolume(int Volume);
+    int TelRecAPI_PlayerWriteData(unsigned char *AudioData);
 
 #ifdef __cplusplus
     int TelRecAPI_SearchDevice(EventCallBack CallBack);
