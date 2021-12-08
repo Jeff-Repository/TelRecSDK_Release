@@ -12,10 +12,73 @@ namespace CSharpDemo
 {
     public partial class Form1 : Form
     {
-        int Device = 0;
+        IntPtr Device = IntPtr.Zero;
         Thread SearchThread;
         bool UploadFileThreadWorking = false;
         bool DownloadFileThreadWorking = false;
+
+        void HeartbeatThreadCallBack(TelRecInterface.TelRecEventType Event, IntPtr Device, int Channel, int Arg)
+        {
+            switch (Event)
+            {
+                case TelRecInterface.TelRecEventType.ConnectStatusChanged:
+                    {
+                        Console.WriteLine("Device connect status changed : " + TelRecInterface.ConnectStatus(Device));
+                        break;
+                    }
+                case TelRecInterface.TelRecEventType.StorageStatusChanged:
+                    {
+                        TelRecInterface.TelRecStorageStatus Status = TelRecInterface.StorageStatus(Device);
+                        Console.WriteLine("Device storage status changed : " + Status.Status);
+                        if (Status.Status == TelRecInterface.StorageStatusType.Normal)
+                        {
+                            Console.WriteLine("Capacity : " + Status.Capacity + "MB");
+                            Console.WriteLine("Free : " + Status.Free + "MB");
+                        }
+                        break;
+                    }
+                case TelRecInterface.TelRecEventType.CloudServerStatusChanged:
+                    {
+                        bool CloudServerHasConnected = TelRecInterface.CloudServerHasConnected(Device);
+                        Console.WriteLine("Device cloud connect status changed : " + CloudServerHasConnected);
+                        break;
+                    }
+                case TelRecInterface.TelRecEventType.OnlineUserListChanged:
+                    {
+                        List<TelRecInterface.TelRecOnlineUser> OnlineUserList = TelRecInterface.OnlineUserList(Device);
+                        for (int i = 0; i < OnlineUserList.Count; i++)
+                        {
+                            Console.WriteLine("Online user : " + OnlineUserList[i].UserName + ", IP : " + OnlineUserList[i].IP);
+                            //...
+                        }
+                        break;
+                    }
+                case TelRecInterface.TelRecEventType.ChannelStatusChanged:
+                    {
+                        TelRecInterface.TelRecChannelStatus Status = TelRecInterface.ChannelStatus(Device, Channel);
+                        Console.WriteLine("Channel : " + Channel + ", Status : " + Status.PhoneStatus);
+                        if (Status.PhoneNum.Length > 0)
+                            Console.WriteLine("Channel : " + Channel + ", PhoneNumber : " + Status.PhoneNum);
+                        //...
+                        break;
+                    }
+                case TelRecInterface.TelRecEventType.ChannelPlayBackChanged:
+                    {
+                        Console.WriteLine("Channel : " + Channel + ", PlayBack is " + ((Arg > 0) ? "enabled" : "disabled"));
+                        break;
+                    }
+                case TelRecInterface.TelRecEventType.ChannelTalkTimeChanged:
+                    {
+                        Console.WriteLine("Channel : " + Channel + ", Talk time : " + TelRecInterface.TalkTimeToString(Arg));
+                        break;
+                    }
+                case TelRecInterface.TelRecEventType.ChannelMonitorChanged:
+                    {
+                        Console.WriteLine("Channel : " + Channel + ", Monitor is " + ((Arg > 0) ? "enabled" : "disabled"));
+                        break;
+                    }
+            }
+        }
 
         void SearchThreadFunction()
         {
@@ -51,7 +114,7 @@ namespace CSharpDemo
 
         bool CheckDevice()
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
             {
                 LogTextBox.AppendText("Device cannot be empty");
                 return false;
@@ -71,7 +134,7 @@ namespace CSharpDemo
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (Device != 0)
+            if (Device == IntPtr.Zero)
             {
                 TelRecInterface.DeleteDevice(Device);
             }
@@ -92,7 +155,7 @@ namespace CSharpDemo
         private void CreateDeviceButton_Click(object sender, EventArgs e)
         {
             LogTextBox.Clear();
-            if (Device != 0)
+            if (Device != IntPtr.Zero)
             {
                 LogTextBox.AppendText("The device has already been created");
                 return;
@@ -104,7 +167,7 @@ namespace CSharpDemo
                 return;
             }
             Device = TelRecInterface.CreateDevice(DeviceID);
-            if (Device != 0)
+            if (Device != IntPtr.Zero)
             {
                 LogTextBox.AppendText("Device created successfully" + "\r\n");
                 LogTextBox.AppendText("Device Model : " + TelRecInterface.DeviceModel(Device) + "\r\n");
@@ -189,68 +252,7 @@ namespace CSharpDemo
         {
             if (!CheckDevice())
                 return;
-            TelRecInterface.CreateHeartbeatThread(Device, (TelRecInterface.TelRecEventType Event, int Device, int Channel, int Arg) =>
-            {
-                switch (Event)
-                {
-                    case TelRecInterface.TelRecEventType.ConnectStatusChanged:
-                    {
-                        Console.WriteLine("Device connect status changed : " + TelRecInterface.ConnectStatus(Device));
-                        break;
-                    }
-                    case TelRecInterface.TelRecEventType.StorageStatusChanged:
-                    {
-                        TelRecInterface.TelRecStorageStatus Status = TelRecInterface.StorageStatus(Device);
-                        Console.WriteLine("Device storage status changed : " + Status.Status);
-                        if (Status.Status == TelRecInterface.StorageStatusType.Normal)
-                        {
-                            Console.WriteLine("Capacity : " + Status.Capacity + "MB");
-                            Console.WriteLine("Free : " + Status.Free + "MB");
-                        }
-                        break;
-                    }
-                    case TelRecInterface.TelRecEventType.CloudServerStatusChanged:
-                    {
-                        bool CloudServerHasConnected = TelRecInterface.CloudServerHasConnected(Device);
-                        Console.WriteLine("Device cloud connect status changed : " + CloudServerHasConnected);
-                        break;
-                    }
-                    case TelRecInterface.TelRecEventType.OnlineUserListChanged:
-                    {
-                        List<TelRecInterface.TelRecOnlineUser> OnlineUserList = TelRecInterface.OnlineUserList(Device);
-                        for (int i = 0; i < OnlineUserList.Count; i++)
-                        {
-                            Console.WriteLine("Online user : " + OnlineUserList[i].UserName + ", IP : " + OnlineUserList[i].IP);
-                            //...
-                        }
-                        break;
-                    }
-                    case TelRecInterface.TelRecEventType.ChannelStatusChanged:
-                    {
-                        TelRecInterface.TelRecChannelStatus Status = TelRecInterface.ChannelStatus(Device, Channel);
-                        Console.WriteLine("Channel : " + Channel + ", Status : " + Status.PhoneStatus);
-                        if(Status.PhoneNum.Length > 0)
-                            Console.WriteLine("Channel : " + Channel + ", PhoneNumber : " + Status.PhoneNum);
-                        //...
-                        break;
-                    }
-                    case TelRecInterface.TelRecEventType.ChannelPlayBackChanged:
-                    {
-                        Console.WriteLine("Channel : " + Channel + ", PlayBack is " + ((Arg > 0) ? "enabled" : "disabled"));
-                        break;
-                    }
-                    case TelRecInterface.TelRecEventType.ChannelTalkTimeChanged:
-                    {
-                        Console.WriteLine("Channel : " + Channel + ", Talk time : " + TelRecInterface.TalkTimeToString(Arg));
-                        break;
-                    }
-                    case TelRecInterface.TelRecEventType.ChannelMonitorChanged:
-                    {
-                        Console.WriteLine("Channel : " + Channel + ", Monitor is " + ((Arg > 0) ? "enabled" : "disabled"));
-                        break;
-                    }
-                }
-            });
+            TelRecInterface.CreateHeartbeatThread(Device, HeartbeatThreadCallBack);
         }
 
         private void GetStorageStatusButton_Click(object sender, EventArgs e)
@@ -476,7 +478,7 @@ namespace CSharpDemo
                 LogTextBox.AppendText("Uploading...\r\n");
                 Thread UploadFileThread = new Thread(() =>
                 {
-                    Errno = TelRecInterface.UploadFile(Device, OFD.FileName, "/PlayBackFiles", null, (int Device, int Progressa) =>
+                    Errno = TelRecInterface.UploadFile(Device, OFD.FileName, "/PlayBackFiles", null, (IntPtr Device, int Progressa) =>
                     {
                         this.Invoke((EventHandler)delegate
                         {
@@ -513,7 +515,7 @@ namespace CSharpDemo
             LogTextBox.Clear();
             Thread DownloadFileThread = new Thread(() =>
             {
-                Errno = TelRecInterface.DownloadFile(Device, "/1.txt", (int Device, byte[] Data, int Length) =>
+                Errno = TelRecInterface.DownloadFile(Device, "/1.txt", (IntPtr Device, byte[] Data, int Length) =>
                 {
                     if (Data == null)//GotDataSize
                     {

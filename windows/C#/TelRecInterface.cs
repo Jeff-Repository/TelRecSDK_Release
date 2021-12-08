@@ -9,9 +9,10 @@ namespace CSharpDemo
     public class TelRecInterface
     {
         /*DLL File Path*/
-        const string TelRecSDK_DLL_Path = "../../../../TelRecSDK.dll";
+        const string TelRecSDK_DLL_Path = "TelRecSDK.dll";
 
         #region SDK
+
         #region Array Length
         public const int DeviceID_Length = 20;
         public const int UserNameLengthMax = 19;
@@ -24,6 +25,7 @@ namespace CSharpDemo
         public const int ExNumLengthMax = 10;
         public const int NotesLengthMax = 64;
         #endregion
+
         #region Data Structure
         public enum TelRecEventType
         {
@@ -41,7 +43,7 @@ namespace CSharpDemo
             ChannelPlayBackChanged,
             ChannelRecordEnd
         }
-        [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+        [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
         struct FoundDeviceInfoStruct
         {
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = DeviceID_Length)]
@@ -89,7 +91,7 @@ namespace CSharpDemo
             public byte[] LoginTime;
             public uint SDKVersion;
         }
-        [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+        [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
         struct OnlineUserListStruct
         {
             public int Count;
@@ -274,9 +276,10 @@ namespace CSharpDemo
             public ushort Offset;
         }
         #endregion
+
         #region C++ API
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        delegate int EventCallBack(int Event, int Device, IntPtr Data, int Length);
+        delegate int EventCallBack(int Event, IntPtr Device, IntPtr Data, int Length);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         extern static int TelRecAPI_Init();
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
@@ -284,132 +287,134 @@ namespace CSharpDemo
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         extern static int TelRecAPI_CheckDeviceID(byte[] DeviceID);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_CS_SearchDevice(EventCallBack CallBack);
+        extern static int TelRecAPI_C_SearchDevice(EventCallBack CallBack);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_CreateDevice(byte[] DeviceID);
+        extern static IntPtr TelRecAPI_CreateDevice(byte[] DeviceID);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_DeleteDevice(int Device);
+        extern static int TelRecAPI_DeleteDevice(IntPtr Device);
         /*Set Login Parameter*/
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_SetNetAddr(int Device, byte[] IPaddress, ushort Port);
+        extern static int TelRecAPI_SetNetAddr(IntPtr Device, byte[] IPaddress, ushort Port);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_SetUserPassword(int Device, byte[] UserName, int UserNameLength, byte[] Password);
+        extern static int TelRecAPI_SetUserPassword(IntPtr Device, byte[] UserName, int UserNameLength, byte[] Password);
         /*Device Info*/
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static IntPtr TelRecAPI_DeviceModel(int Device);
+        extern static IntPtr TelRecAPI_DeviceModel(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static IntPtr TelRecAPI_FirmwareVersion(int Device);
+        extern static IntPtr TelRecAPI_FirmwareVersion(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_DeviceChannels(int Device);
+        extern static int TelRecAPI_DeviceChannels(IntPtr Device);
         /*Device Status*/
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_ConnectStatus(int Device);
+        extern static int TelRecAPI_ConnectStatus(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static IntPtr TelRecAPI_StorageStatus(int Device);
+        extern static IntPtr TelRecAPI_StorageStatus(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static IntPtr TelRecAPI_NetStatus(int Device);
+        extern static IntPtr TelRecAPI_NetStatus(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static IntPtr TelRecAPI_ChannelStatus(int Device, int Channel);
+        extern static IntPtr TelRecAPI_ChannelStatus(IntPtr Device, int Channel);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static IntPtr TelRecAPI_OnlineUserList(int Device);
+        extern static IntPtr TelRecAPI_OnlineUserList(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static bool TelRecAPI_CloudServerHasConnected(int Device);
+        extern static bool TelRecAPI_CloudServerHasConnected(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static bool TelRecAPI_SimulateOffHookIsEnabled(int Device, int Channel);
+        extern static bool TelRecAPI_SimulateOffHookIsEnabled(IntPtr Device, int Channel);
         /*Device Setting*/
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static IntPtr TelRecAPI_DateTime(int Device);
+        extern static IntPtr TelRecAPI_DateTime(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static IntPtr TelRecAPI_PlayBackFileList(int Device);
+        extern static IntPtr TelRecAPI_PlayBackFileList(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static IntPtr TelRecAPI_BaseSetting(int Device);
+        extern static IntPtr TelRecAPI_BaseSetting(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static IntPtr TelRecAPI_ChannelSetting(int Device, int Channel);
+        extern static IntPtr TelRecAPI_ChannelSetting(IntPtr Device, int Channel);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static IntPtr TelRecAPI_KeyControlSetting(int Device);
+        extern static IntPtr TelRecAPI_KeyControlSetting(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static IntPtr TelRecAPI_NetSetting(int Device);
+        extern static IntPtr TelRecAPI_NetSetting(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static IntPtr TelRecAPI_SMDRSetting(int Device);
+        extern static IntPtr TelRecAPI_SMDRSetting(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static IntPtr TelRecAPI_UserList(int Device);
+        extern static IntPtr TelRecAPI_UserList(IntPtr Device);
         /*Operation*/
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_Login(int Device, bool RemoteLogin);
+        extern static int TelRecAPI_Login(IntPtr Device, bool RemoteLogin);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_Logout(int Device);
+        extern static int TelRecAPI_Logout(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_CS_CreateHeartbeatThread(int Device, EventCallBack CallBack);
+        extern static int TelRecAPI_C_CreateHeartbeatThread(IntPtr Device, EventCallBack CallBack);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_GetStorageStatus(int Device);
+        extern static int TelRecAPI_GetStorageStatus(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_GetNetStatus(int Device);
+        extern static int TelRecAPI_GetNetStatus(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_GetTime(int Device);
+        extern static int TelRecAPI_GetTime(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_SetTime(int Device, IntPtr NewDateTime);
+        extern static int TelRecAPI_SetTime(IntPtr Device, IntPtr NewDateTime);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_GetPlayBackFileList(int Device);
+        extern static int TelRecAPI_GetPlayBackFileList(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_GetBaseSetting(int Device);
+        extern static int TelRecAPI_GetBaseSetting(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_SetBaseSetting(int Device, IntPtr Setting);
+        extern static int TelRecAPI_SetBaseSetting(IntPtr Device, IntPtr Setting);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_GetChannelSetting(int Device, int Channel);
+        extern static int TelRecAPI_GetChannelSetting(IntPtr Device, int Channel);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_SetChannelSetting(int Device, int Channel, IntPtr Setting);
+        extern static int TelRecAPI_SetChannelSetting(IntPtr Device, int Channel, IntPtr Setting);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_GetKeyControlSetting(int Device);
+        extern static int TelRecAPI_GetKeyControlSetting(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_SetKeyControlSetting(int Device, IntPtr Setting);
+        extern static int TelRecAPI_SetKeyControlSetting(IntPtr Device, IntPtr Setting);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_GetNetSetting(int Device);
+        extern static int TelRecAPI_GetNetSetting(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_SetNetSetting(int Device, IntPtr Setting);
+        extern static int TelRecAPI_SetNetSetting(IntPtr Device, IntPtr Setting);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_GetSMDRSetting(int Device);
+        extern static int TelRecAPI_GetSMDRSetting(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_SetSMDRSetting(int Device, IntPtr Setting);
+        extern static int TelRecAPI_SetSMDRSetting(IntPtr Device, IntPtr Setting);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_GetUserList(int Device);
+        extern static int TelRecAPI_GetUserList(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_AddUser(int Device, IntPtr User, byte[] Password);
+        extern static int TelRecAPI_AddUser(IntPtr Device, IntPtr User, byte[] Password);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_EditUser(int Device, IntPtr User, byte[] Password);
+        extern static int TelRecAPI_EditUser(IntPtr Device, IntPtr User, byte[] Password);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_DeleteUser(int Device, IntPtr User);
+        extern static int TelRecAPI_DeleteUser(IntPtr Device, IntPtr User);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_CS_UploadFile(int Device, byte[] SrcFilePath, byte[] UploadDir, byte[] UploadFileName, EventCallBack CallBack);
+        extern static int TelRecAPI_C_UploadFile(IntPtr Device, byte[] SrcFilePath, byte[] UploadDir, byte[] UploadFileName, EventCallBack CallBack);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_CS_DownloadFile(int Device, byte[] FilePath, EventCallBack CallBack);
+        extern static int TelRecAPI_C_DownloadFile(IntPtr Device, byte[] FilePath, EventCallBack CallBack);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_RemoveFile(int Device, byte[] FilePath);
+        extern static int TelRecAPI_RemoveFile(IntPtr Device, byte[] FilePath);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_GetLatestRecordTime(int Device, out int Year, out int Month, out int Day);
+        extern static int TelRecAPI_GetLatestRecordTime(IntPtr Device, out int Year, out int Month, out int Day);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_GetEarliestRecordTime(int Device, out int Year, out int Month, out int Day);
+        extern static int TelRecAPI_GetEarliestRecordTime(IntPtr Device, out int Year, out int Month, out int Day);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_GetDayListFromMonthDir(int Device, int Year, int Month, byte[] Day);
+        extern static int TelRecAPI_GetDayListFromMonthDir(IntPtr Device, int Year, int Month, byte[] Day);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_EditRecordNotes(int Device, int ItemOffset, int Year, int Month, int Day, int Channel, byte[] Notes);
+        extern static int TelRecAPI_EditRecordNotes(IntPtr Device, int ItemOffset, int Year, int Month, int Day, int Channel, byte[] Notes);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_DeleteRecord(int Device, IntPtr Item);
+        extern static int TelRecAPI_DeleteRecord(IntPtr Device, IntPtr Item);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_StartMonitor(int Device, int Channel);
+        extern static int TelRecAPI_StartMonitor(IntPtr Device, int Channel);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         extern static int TelRecAPI_StopMonitor();
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_Dial(int Device, int Channel, byte[] PhoneNum, int PhoneNumLength);
+        extern static int TelRecAPI_Dial(IntPtr Device, int Channel, byte[] PhoneNum, int PhoneNumLength);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-        extern static int TelRecAPI_OffHook(int Device, int Channel);
+        extern static int TelRecAPI_OffHook(IntPtr Device, int Channel);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         extern static int TelRecAPI_PlayerSetVolume(int Volume);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         extern static int TelRecAPI_PlayerWriteData(byte[] Data);
         #endregion
+
         #endregion
 
         #region C# Interface
+
         #region C# Data Structure 
         #region Errno
         public enum TelRecErrno
@@ -668,12 +673,13 @@ namespace CSharpDemo
             public int Offset;
         }
         #endregion
+
         #region C# API
         /*CallBack*/
         public delegate void FoundDeviceCallBack(TelRecFoundDeviceInfo Info, int SearchProgress);
-        public delegate void DeviceEventCallBack(TelRecEventType Event, int Device, int Channel, int Arg);
-        public delegate bool UploadCallBack(int Device, int Progress);
-        public delegate bool DownloadCallBack(int Device, byte[] Data, int Length);
+        public delegate void DeviceEventCallBack(TelRecEventType Event, IntPtr Device, int Channel, int Arg);
+        public delegate bool UploadCallBack(IntPtr Device, int Progress);
+        public delegate bool DownloadCallBack(IntPtr Device, byte[] Data, int Length);
         /*API*/
         public static bool IPaddressParse(string IP, out uint Output)
         {
@@ -752,7 +758,7 @@ namespace CSharpDemo
         }
         public static void SearchDevice(FoundDeviceCallBack CallBack)
         {
-            TelRecAPI_CS_SearchDevice((int Event, int Device, IntPtr Data, int Length) =>
+            TelRecAPI_C_SearchDevice((int Event, IntPtr Device, IntPtr Data, int Length) =>
             {
                 if (Event == (int)TelRecEventType.UpdateProgress)
                 {
@@ -777,48 +783,48 @@ namespace CSharpDemo
                 return 0;
             });
         }
-        public static int CreateDevice(string DeviceID)
+        public static IntPtr CreateDevice(string DeviceID)
         {
             byte[] DeviceIDBytes = Encoding.ASCII.GetBytes(DeviceID);
             if (DeviceIDBytes.Length != DeviceID_Length)
-                return 0;
+                return IntPtr.Zero;
             return TelRecAPI_CreateDevice(DeviceIDBytes);
         }
-        public static void DeleteDevice(int Device)
+        public static void DeleteDevice(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return;
             TelRecAPI_DeleteDevice(Device);
         }
         /*Device Info*/
-        public static string DeviceModel(int Device)
+        public static string DeviceModel(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return "";
             return Marshal.PtrToStringAnsi(TelRecAPI_DeviceModel(Device));
         }
-        public static string DeviceFirmwareVersion(int Device)
+        public static string DeviceFirmwareVersion(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return "";
             return Marshal.PtrToStringAnsi(TelRecAPI_FirmwareVersion(Device));
         }
-        public static int DeviceChannels(int Device)
+        public static int DeviceChannels(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return 0;
             return TelRecAPI_DeviceChannels(Device);
         }
         /*Device Status*/
-        public static ConnectStatusType ConnectStatus(int Device)
+        public static ConnectStatusType ConnectStatus(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return ConnectStatusType.NotConnected;
             return (ConnectStatusType)TelRecAPI_ConnectStatus(Device);
         }
-        public static TelRecStorageStatus StorageStatus(int Device)
+        public static TelRecStorageStatus StorageStatus(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return null;
             StorageStatusStruct StatusStruct = (StorageStatusStruct)Marshal.PtrToStructure(TelRecAPI_StorageStatus(Device), typeof(StorageStatusStruct));
             return new TelRecStorageStatus
@@ -828,9 +834,9 @@ namespace CSharpDemo
                 Free = StatusStruct.Free
             };
         }
-        public static TelRecNetStatus NetStatus(int Device)
+        public static TelRecNetStatus NetStatus(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return null;
             NetStatusStruct StatusStruct = (NetStatusStruct)Marshal.PtrToStructure(TelRecAPI_NetStatus(Device), typeof(NetStatusStruct));
             return new TelRecNetStatus
@@ -838,9 +844,9 @@ namespace CSharpDemo
                 IPaddress = IPaddressToString(StatusStruct.IP)
             };
         }
-        public static TelRecChannelStatus ChannelStatus(int Device, int Channel)
+        public static TelRecChannelStatus ChannelStatus(IntPtr Device, int Channel)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return null;
             ChannelStatusStruct StatusStruct = (ChannelStatusStruct)Marshal.PtrToStructure(TelRecAPI_ChannelStatus(Device, Channel), typeof(ChannelStatusStruct));
             return new TelRecChannelStatus
@@ -851,7 +857,7 @@ namespace CSharpDemo
                 PhoneNum = Encoding.ASCII.GetString(StatusStruct.PhoneNum, 0, StatusStruct.PhoneNumLength)
             };
         }
-        public static List<TelRecOnlineUser> OnlineUserList(int Device)
+        public static List<TelRecOnlineUser> OnlineUserList(IntPtr Device)
         {
             List<TelRecOnlineUser> UserList = new List<TelRecOnlineUser>();
             OnlineUserListStruct ListStruct = (OnlineUserListStruct)Marshal.PtrToStructure(TelRecAPI_OnlineUserList(Device), typeof(OnlineUserListStruct));
@@ -871,14 +877,14 @@ namespace CSharpDemo
             }
             return UserList;
         }
-        public static bool CloudServerHasConnected(int Device)
+        public static bool CloudServerHasConnected(IntPtr Device)
         {
             return TelRecAPI_CloudServerHasConnected(Device);
         }
         /*Device Setting*/
-        public static TelRecDateTime DateTime(int Device)
+        public static TelRecDateTime DateTime(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return null;
             DateTimeStruct TimeStruct = (DateTimeStruct)Marshal.PtrToStructure(TelRecAPI_DateTime(Device), typeof(DateTimeStruct));
             return new TelRecDateTime
@@ -892,7 +898,7 @@ namespace CSharpDemo
                 Week = TimeStruct.Week
             };
         }
-        public static List<string> PlayBackFiles(int Device)
+        public static List<string> PlayBackFiles(IntPtr Device)
         {
             List<string> Files = new List<string>();
             PlayBackFilesStruct FilesStruct = (PlayBackFilesStruct)Marshal.PtrToStructure(TelRecAPI_PlayBackFileList(Device), typeof(PlayBackFilesStruct));
@@ -902,9 +908,9 @@ namespace CSharpDemo
             }
             return Files;
         }
-        public static TelRecBaseSetting BaseSetting(int Device)
+        public static TelRecBaseSetting BaseSetting(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return null;
             BaseSettingStruct SettingStruct = (BaseSettingStruct)Marshal.PtrToStructure(TelRecAPI_BaseSetting(Device), typeof(BaseSettingStruct));
             return new TelRecBaseSetting
@@ -923,9 +929,9 @@ namespace CSharpDemo
                 KeyRecordEnd = Encoding.ASCII.GetString(SettingStruct.KeyRecordEnd, 0, SettingStruct.KeyRecordEndLength)
             };
         }
-        public static TelRecChannelSetting ChannelSetting(int Device, int Channel)
+        public static TelRecChannelSetting ChannelSetting(IntPtr Device, int Channel)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return null;
             ChannelSettingStruct SettingStruct = (ChannelSettingStruct)Marshal.PtrToStructure(TelRecAPI_ChannelSetting(Device, Channel), typeof(ChannelSettingStruct));
             TelRecChannelSetting Setting = new TelRecChannelSetting();
@@ -961,9 +967,9 @@ namespace CSharpDemo
             Setting.AnnouncementFileName = Encoding.UTF8.GetString(SettingStruct.AnnouncementFileName, 0, FileNameLengthMax).TrimEnd('\0');
             return Setting;
         }
-        public static TelRecKeyControlSetting KeyControlSetting(int Device)
+        public static TelRecKeyControlSetting KeyControlSetting(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return null;
             KeyControlSettingStruct SettingStruct = (KeyControlSettingStruct)Marshal.PtrToStructure(TelRecAPI_KeyControlSetting(Device), typeof(KeyControlSettingStruct));
             TelRecKeyControlSetting Setting = new TelRecKeyControlSetting();
@@ -976,9 +982,9 @@ namespace CSharpDemo
             Setting.PlayBackEndKey = Encoding.ASCII.GetString(SettingStruct.PlayBackEndKey, 0, SettingStruct.PlayBackEndKeyLength);
             return Setting;
         }
-        public static TelRecNetSetting NetSetting(int Device)
+        public static TelRecNetSetting NetSetting(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return null;
             NetSettingStruct SettingStruct = (NetSettingStruct)Marshal.PtrToStructure(TelRecAPI_NetSetting(Device), typeof(NetSettingStruct));
             return new TelRecNetSetting
@@ -992,9 +998,9 @@ namespace CSharpDemo
                 EnableCloud = (SettingStruct.EnableCloud > 0)
             };
         }
-        public static TelRecSMDRSetting SMDRSetting(int Device)
+        public static TelRecSMDRSetting SMDRSetting(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return null;
             SMDRSettingStruct SettingStruct = (SMDRSettingStruct)Marshal.PtrToStructure(TelRecAPI_SMDRSetting(Device), typeof(SMDRSettingStruct));
             return new TelRecSMDRSetting
@@ -1016,7 +1022,7 @@ namespace CSharpDemo
                 CheckBitOption = SettingStruct.CheckBitOption
             };
         }
-        public static List<TelRecUserInfo> UserList(int Device)
+        public static List<TelRecUserInfo> UserList(IntPtr Device)
         {
             List<TelRecUserInfo> UserList = new List<TelRecUserInfo>();
             UserListStruct ListStruct = (UserListStruct)Marshal.PtrToStructure(TelRecAPI_UserList(Device), typeof(UserListStruct));
@@ -1043,9 +1049,9 @@ namespace CSharpDemo
             return UserList;
         }
         /*Operation*/
-        public static TelRecErrno Login(int Device, string IPaddress, ushort Port, string UserName, string Password, bool RemoteLogin)
+        public static TelRecErrno Login(IntPtr Device, string IPaddress, ushort Port, string UserName, string Password, bool RemoteLogin)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             byte[] UserNameBytes = Encoding.ASCII.GetBytes(UserName);
             byte[] PasswordBytes = Encoding.ASCII.GetBytes(Password + '\0');
@@ -1054,52 +1060,52 @@ namespace CSharpDemo
             TelRecAPI_SetUserPassword(Device, UserNameBytes, UserNameBytes.Length, PasswordBytes);
             return (TelRecErrno)TelRecAPI_Login(Device, RemoteLogin);
         }
-        public static TelRecErrno Logout(int Device)
+        public static TelRecErrno Logout(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_Logout(Device);
         }
         private static EventCallBack HeartbeatCallBack = null;
-        public static TelRecErrno CreateHeartbeatThread(int Device, DeviceEventCallBack CallBack)
+        public static TelRecErrno CreateHeartbeatThread(IntPtr Device, DeviceEventCallBack CallBack)
         {
             int Errno;
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             if(HeartbeatCallBack == null)
             {
                 HeartbeatCallBack = new EventCallBack(
-                (int Event, int EventDevice, IntPtr Data, int Length) =>
+                (int Event, IntPtr EventDevice, IntPtr Data, int Length) =>
                 {
                     CallBack((TelRecEventType)Event, EventDevice, (int)Data, Length);
                     return 0;
                 });
             }
-            Errno = TelRecAPI_CS_CreateHeartbeatThread(Device, HeartbeatCallBack);
+            Errno = TelRecAPI_C_CreateHeartbeatThread(Device, HeartbeatCallBack);
             return (TelRecErrno)Errno;
         }
-        public static TelRecErrno GetStorageStatus(int Device)
+        public static TelRecErrno GetStorageStatus(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_GetStorageStatus(Device);
         }
-        public static TelRecErrno GetNetStatus(int Device)
+        public static TelRecErrno GetNetStatus(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_GetNetStatus(Device);
         }
-        public static TelRecErrno GetTime(int Device)
+        public static TelRecErrno GetTime(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_GetTime(Device);
         }
-        public static TelRecErrno SetTime(int Device, TelRecDateTime NewDateTime)
+        public static TelRecErrno SetTime(IntPtr Device, TelRecDateTime NewDateTime)
         {
             TelRecErrno Errno;
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             DateTimeStruct NewDateTimeStruct = new DateTimeStruct
             {
@@ -1117,21 +1123,21 @@ namespace CSharpDemo
             Marshal.FreeHGlobal(p);
             return Errno;
         }
-        public static TelRecErrno GetPlayBackFileList(int Device)
+        public static TelRecErrno GetPlayBackFileList(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_GetPlayBackFileList(Device);
         }
-        public static TelRecErrno GetBaseSetting(int Device)
+        public static TelRecErrno GetBaseSetting(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_GetBaseSetting(Device);
         }
-        public static TelRecErrno SetBaseSetting(int Device, TelRecBaseSetting Setting)
+        public static TelRecErrno SetBaseSetting(IntPtr Device, TelRecBaseSetting Setting)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             TelRecErrno Errno;
             byte[] KeyRecordStartBytes = Encoding.ASCII.GetBytes(Setting.KeyRecordStart);
@@ -1157,15 +1163,15 @@ namespace CSharpDemo
             Marshal.FreeHGlobal(p);
             return Errno;
         }
-        public static TelRecErrno GetChannelSetting(int Device, int Channel)
+        public static TelRecErrno GetChannelSetting(IntPtr Device, int Channel)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_GetChannelSetting(Device, Channel);
         }
-        public static TelRecErrno SetChannelSetting(int Device, int Channel, TelRecChannelSetting Setting)
+        public static TelRecErrno SetChannelSetting(IntPtr Device, int Channel, TelRecChannelSetting Setting)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             TelRecErrno Errno;
             byte[] NameBytes;
@@ -1214,15 +1220,15 @@ namespace CSharpDemo
             Marshal.FreeHGlobal(p);
             return Errno;
         }
-        public static TelRecErrno GetKeyControlSetting(int Device)
+        public static TelRecErrno GetKeyControlSetting(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_GetKeyControlSetting(Device);
         }
-        public static TelRecErrno SetKeyControlSetting(int Device, TelRecKeyControlSetting Setting)
+        public static TelRecErrno SetKeyControlSetting(IntPtr Device, TelRecKeyControlSetting Setting)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             TelRecErrno Errno;
             byte[] StrBytes;
@@ -1251,17 +1257,17 @@ namespace CSharpDemo
             Marshal.FreeHGlobal(p);
             return Errno;
         }
-        public static TelRecErrno GetNetSetting(int Device)
+        public static TelRecErrno GetNetSetting(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_GetNetSetting(Device);
         }
-        public static TelRecErrno SetNetSetting(int Device, TelRecNetSetting Setting)
+        public static TelRecErrno SetNetSetting(IntPtr Device, TelRecNetSetting Setting)
         {
             TelRecErrno Errno;
             byte[] tMAC = new byte[6];
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             if (!IPaddressParse(Setting.IP, out uint tIP))
                 return TelRecErrno.ParameterInvalid;
@@ -1285,15 +1291,15 @@ namespace CSharpDemo
             Marshal.FreeHGlobal(p);
             return Errno;
         }
-        public static TelRecErrno GetSMDRSetting(int Device)
+        public static TelRecErrno GetSMDRSetting(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_GetSMDRSetting(Device);
         }
-        public static TelRecErrno SetSMDRSetting(int Device, TelRecSMDRSetting Setting)
+        public static TelRecErrno SetSMDRSetting(IntPtr Device, TelRecSMDRSetting Setting)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             TelRecErrno Errno;
             IntPtr p = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(SMDRSettingStruct)));
@@ -1318,15 +1324,15 @@ namespace CSharpDemo
             Marshal.FreeHGlobal(p);
             return Errno;
         }
-        public static TelRecErrno GetUserList(int Device)
+        public static TelRecErrno GetUserList(IntPtr Device)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_GetUserList(Device);
         }
-        public static TelRecErrno AddUser(int Device, TelRecUserInfo User, string Password)
+        public static TelRecErrno AddUser(IntPtr Device, TelRecUserInfo User, string Password)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             TelRecErrno Errno;
             IntPtr p = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(UserInfoStruct)));
@@ -1348,9 +1354,9 @@ namespace CSharpDemo
             Marshal.FreeHGlobal(p);
             return Errno;
         }
-        public static TelRecErrno EditUser(int Device, TelRecUserInfo User, string Password)
+        public static TelRecErrno EditUser(IntPtr Device, TelRecUserInfo User, string Password)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             TelRecErrno Errno;
             IntPtr p = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(UserInfoStruct)));
@@ -1372,9 +1378,9 @@ namespace CSharpDemo
             Marshal.FreeHGlobal(p);
             return Errno;
         }
-        public static TelRecErrno DeleteUser(int Device, TelRecUserInfo User)
+        public static TelRecErrno DeleteUser(IntPtr Device, TelRecUserInfo User)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             TelRecErrno Errno;
             IntPtr p = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(UserInfoStruct)));
@@ -1387,16 +1393,16 @@ namespace CSharpDemo
             Marshal.FreeHGlobal(p);
             return Errno;
         }
-        public static TelRecErrno UploadFile(int Device, string SrcFilePath, string UploadDir, string UploadFileName, UploadCallBack CallBack)
+        public static TelRecErrno UploadFile(IntPtr Device, string SrcFilePath, string UploadDir, string UploadFileName, UploadCallBack CallBack)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             TelRecErrno Errno;
-            Errno = (TelRecErrno)TelRecAPI_CS_UploadFile(Device,
+            Errno = (TelRecErrno)TelRecAPI_C_UploadFile(Device,
                 Encoding.Default.GetBytes(SrcFilePath + '\0'),
                 Encoding.Default.GetBytes(UploadDir + '\0'),
                 (UploadFileName == null) ? null : Encoding.Default.GetBytes(UploadFileName + '\0'),
-                (int Event, int EventDevice, IntPtr Data, int Length) =>
+                (int Event, IntPtr EventDevice, IntPtr Data, int Length) =>
                 {
                     if (Event == (int)TelRecEventType.UpdateProgress)
                     {
@@ -1406,14 +1412,14 @@ namespace CSharpDemo
                 });
             return Errno;
         }
-        public static TelRecErrno DownloadFile(int Device, string FilePath, DownloadCallBack CallBack)
+        public static TelRecErrno DownloadFile(IntPtr Device, string FilePath, DownloadCallBack CallBack)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             TelRecErrno Errno;
-            Errno = (TelRecErrno)TelRecAPI_CS_DownloadFile(Device,
+            Errno = (TelRecErrno)TelRecAPI_C_DownloadFile(Device,
                 Encoding.Default.GetBytes(FilePath + '\0'),
-                (int Event, int EventDevice, IntPtr Data, int Length) =>
+                (int Event, IntPtr EventDevice, IntPtr Data, int Length) =>
                 {
                     if (Event == (int)TelRecEventType.GotData)
                     {
@@ -1429,13 +1435,13 @@ namespace CSharpDemo
                 });
             return Errno;
         }
-        public static TelRecErrno RemoveFile(int Device, string FilePath)
+        public static TelRecErrno RemoveFile(IntPtr Device, string FilePath)
         {
             return (TelRecErrno)TelRecAPI_RemoveFile(Device, Encoding.Default.GetBytes(FilePath + '\0'));
         }
-        public static TelRecErrno GetLatestRecordTime(int Device, out int Year, out int Month, out int Day)
+        public static TelRecErrno GetLatestRecordTime(IntPtr Device, out int Year, out int Month, out int Day)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
             {
                 Year = 0;
                 Month = 0;
@@ -1444,9 +1450,9 @@ namespace CSharpDemo
             }
             return (TelRecErrno)TelRecAPI_GetLatestRecordTime(Device, out Year, out Month, out Day);
         }
-        public static TelRecErrno GetEarliestRecordTime(int Device, out int Year, out int Month, out int Day)
+        public static TelRecErrno GetEarliestRecordTime(IntPtr Device, out int Year, out int Month, out int Day)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
             {
                 Year = 0;
                 Month = 0;
@@ -1455,22 +1461,22 @@ namespace CSharpDemo
             }
             return (TelRecErrno)TelRecAPI_GetEarliestRecordTime(Device, out Year, out Month, out Day);
         }
-        public static TelRecErrno GetDayListFromMonthDir(int Device, int Year, int Month, byte[] DayArray)
+        public static TelRecErrno GetDayListFromMonthDir(IntPtr Device, int Year, int Month, byte[] DayArray)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_GetDayListFromMonthDir(Device, Year, Month, DayArray);
         }
-        public static TelRecErrno EditRecordNotes(int Device, int ItemOffset, int Year, int Month, int Day, int Channel, string Notes)
+        public static TelRecErrno EditRecordNotes(IntPtr Device, int ItemOffset, int Year, int Month, int Day, int Channel, string Notes)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_EditRecordNotes(Device, ItemOffset, Year, Month, Day, Channel, Encoding.UTF8.GetBytes(Notes + '\0'));
         }
-        public static TelRecErrno DeleteRecord(int Device, TelRecRecordDeleteItem Item)
+        public static TelRecErrno DeleteRecord(IntPtr Device, TelRecRecordDeleteItem Item)
         {
             TelRecErrno Errno;
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             RecordDeleteItemStruct ItemStruct = new RecordDeleteItemStruct
             {
@@ -1490,9 +1496,9 @@ namespace CSharpDemo
             Marshal.FreeHGlobal(p);
             return Errno;
         }
-        public static TelRecErrno StartMonitor(int Device, int Channel)
+        public static TelRecErrno StartMonitor(IntPtr Device, int Channel)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_StartMonitor(Device, Channel);
         }
@@ -1500,18 +1506,18 @@ namespace CSharpDemo
         {
             TelRecAPI_StopMonitor();
         }
-        public static TelRecErrno Dial(int Device, int Channel, string PhoneNum)
+        public static TelRecErrno Dial(IntPtr Device, int Channel, string PhoneNum)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             if (string.IsNullOrEmpty(PhoneNum))
                 return TelRecErrno.ParameterInvalid;
             byte[] PhoneNumBytes = Encoding.ASCII.GetBytes(PhoneNum);
             return (TelRecErrno)TelRecAPI_Dial(Device, Channel, PhoneNumBytes, PhoneNumBytes.Length);
         }
-        public static TelRecErrno OffHook(int Device, int Channel)
+        public static TelRecErrno OffHook(IntPtr Device, int Channel)
         {
-            if (Device == 0)
+            if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_OffHook(Device, Channel);
         }
@@ -1524,6 +1530,7 @@ namespace CSharpDemo
             TelRecAPI_PlayerWriteData(Data);
         }
         #endregion
+
         #endregion
     }
 }

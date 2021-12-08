@@ -1,0 +1,10 @@
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\bin\x64\Debug\CSharpDemo.exe.config
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\bin\x64\Debug\CSharpDemo.exe
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\bin\x64\Debug\CSharpDemo.pdb
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x64\Debug\CSharpDemo.csproj.SuggestedBindingRedirects.cache
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x64\Debug\CSharpDemo.Form1.resources
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x64\Debug\CSharpDemo.Properties.Resources.resources
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x64\Debug\CSharpDemo.csproj.GenerateResource.cache
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x64\Debug\CSharpDemo.csproj.CoreCompileInputs.cache
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x64\Debug\CSharpDemo.exe
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x64\Debug\CSharpDemo.pdb

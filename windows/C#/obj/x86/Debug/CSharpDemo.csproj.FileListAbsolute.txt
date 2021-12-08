@@ -16,3 +16,14 @@ E:\Project\TelRec\TelRecSDK_Release\C#\obj\x86\Debug\CSharpDemo.exe
 E:\Project\TelRec\TelRecSDK_Release\C#\obj\x86\Debug\CSharpDemo.pdb
 E:\Project\TelRec\TelRecSDK_Release\C#\obj\x86\Debug\CSharpDemo.csproj.CoreCompileInputs.cache
 E:\Project\TelRec\TelRecSDK_Release\C#\obj\x86\Debug\CSharpDemo.csprojAssemblyReference.cache
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\bin\x86\Debug\CSharpDemo.exe.config
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\bin\x86\Debug\CSharpDemo.exe
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\bin\x86\Debug\CSharpDemo.pdb
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x86\Debug\CSharpDemo.csproj.AssemblyReference.cache
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x86\Debug\CSharpDemo.csproj.SuggestedBindingRedirects.cache
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x86\Debug\CSharpDemo.Form1.resources
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x86\Debug\CSharpDemo.Properties.Resources.resources
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x86\Debug\CSharpDemo.csproj.GenerateResource.cache
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x86\Debug\CSharpDemo.csproj.CoreCompileInputs.cache
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x86\Debug\CSharpDemo.exe
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x86\Debug\CSharpDemo.pdb
