@@ -557,10 +557,10 @@ namespace CSharpDemo
         {
             byte[] Array = new byte[32];
             TelRecInterface.GetDayListFromMonthDir(Device,18, 12, Array);
-            for (int i = 0; i < 32; i++)
+            for (int i = 1; i < 32; i++)
             {
                 if(Array[i] > 0)
-                Console.WriteLine(i.ToString());
+                    Console.WriteLine(i.ToString());
             }
         }
 
