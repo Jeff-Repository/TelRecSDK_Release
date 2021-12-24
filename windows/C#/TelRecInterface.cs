@@ -1398,6 +1398,28 @@ namespace CSharpDemo
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_GetRecordTimeSetting(Device);
         }
+        public static TelRecErrno SetRecordTimeSetting(IntPtr Device, TelRecRecordTimeSetting Setting)
+        {
+            if (Device == IntPtr.Zero)
+                return TelRecErrno.ParameterInvalid;
+            TelRecErrno Errno;
+            IntPtr p = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(RecordTimeSettingStruct)));
+            RecordTimeSettingStruct SettingStruct = (RecordTimeSettingStruct)Marshal.PtrToStructure(p, typeof(RecordTimeSettingStruct));
+            SettingStruct.Enable = (byte)(Setting.Enable ? 1 : 0);
+            SettingStruct.Mode = (byte)Setting.Mode;
+            for (int i = 0; i < 21; i++)
+            {
+                SettingStruct.Quantum[i].Enable = (byte)(Setting.Quantum[i].Enable ? 1 : 0);
+                SettingStruct.Quantum[i].StartHour = (byte)Setting.Quantum[i].StartHour;
+                SettingStruct.Quantum[i].StartMinute = (byte)Setting.Quantum[i].StartMinute;
+                SettingStruct.Quantum[i].EndHour = (byte)Setting.Quantum[i].EndHour;
+                SettingStruct.Quantum[i].EndMinute = (byte)Setting.Quantum[i].EndMinute;
+            }
+            Marshal.StructureToPtr(SettingStruct, p, true);
+            Errno = (TelRecErrno)TelRecAPI_SetRecordTimeSetting(Device, p);
+            Marshal.FreeHGlobal(p);
+            return Errno;
+        }
         public static TelRecErrno GetUserList(IntPtr Device)
         {
             if (Device == IntPtr.Zero)
