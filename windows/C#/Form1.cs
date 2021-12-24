@@ -442,6 +442,35 @@ namespace CSharpDemo
             else
                 LogTextBox.AppendText("Get device SMDR setting failed, Errno : " + Errno);
         }
+        
+        private void GetRecordTimeSettingButton_Click(object sender, EventArgs e)
+        {
+            LogTextBox.Clear();
+            if (!CheckDevice())
+                return;
+            TelRecInterface.TelRecErrno Errno = TelRecInterface.GetRecordTimeSetting(Device);
+            if (Errno == TelRecInterface.TelRecErrno.Succeed)
+            {
+                string[] ModeText = { "Whitelist", "Blacklist", "Timing" };
+                string[] WeekText = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+                TelRecInterface.TelRecRecordTimeSetting Setting = TelRecInterface.RecordTimeSetting(Device);
+                LogTextBox.AppendText("Get device record time setting successfully\r\n");
+                LogTextBox.AppendText("Enable : " + Setting.Enable + "\r\n");
+                LogTextBox.AppendText("Mode : " + ModeText[Setting.Mode] + "\r\n");
+                for(int week = 0; week < 7; week++)
+                {
+                    int offset = 3 * week;
+                    LogTextBox.AppendText(WeekText[week] + " Time1 Enable : " + Setting.Quantum[offset].Enable + "\r\n");
+                    LogTextBox.AppendText(WeekText[week] + " Time2 Enable : " + Setting.Quantum[offset + 1].Enable + "\r\n");
+                    LogTextBox.AppendText(WeekText[week] + " Time3 Enable : " + Setting.Quantum[offset + 2].Enable + "\r\n");
+                    LogTextBox.AppendText(WeekText[week] + " Time1 Start Hour : " + Setting.Quantum[offset].StartHour + "\r\n");
+                    LogTextBox.AppendText(WeekText[week] + " Time1 End Hour : " + Setting.Quantum[offset].EndHour + "\r\n");
+                    LogTextBox.AppendText("......\r\n");
+                }
+            }
+            else
+                LogTextBox.AppendText("Get device record time setting failed, Errno : " + Errno);
+        }
 
         private void GetUserListButton_Click(object sender, EventArgs e)
         {
@@ -461,6 +490,11 @@ namespace CSharpDemo
             }
             else
                 LogTextBox.AppendText("Get user list failed, Errno : " + Errno);
+        }
+
+        private void OffHookTestButton_Click(object sender, EventArgs e)
+        {
+            TelRecInterface.OffHook(Device, 0);
         }
 
         private void UploadFileButton_Click(object sender, EventArgs e)
@@ -553,7 +587,7 @@ namespace CSharpDemo
             DownloadFileThread.Start();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void GetDayListFromMonthDirButton_Click(object sender, EventArgs e)
         {
             byte[] Array = new byte[32];
             TelRecInterface.GetDayListFromMonthDir(Device,18, 12, Array);
@@ -562,11 +596,6 @@ namespace CSharpDemo
                 if(Array[i] > 0)
                     Console.WriteLine(i.ToString());
             }
-        }
-
-        private void OffHookTestButton_Click(object sender, EventArgs e)
-        {
-            TelRecInterface.OffHook(Device, 0);
         }
     }
 }

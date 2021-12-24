@@ -242,6 +242,27 @@ namespace CSharpDemo
             public byte[] Reserved;
         }
         [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+        struct RecordTimeQuantumStruct
+        {
+            public byte Enable;
+            public byte StartHour;
+            public byte StartMinute;
+            public byte EndHour;
+            public byte EndMinute;
+        }
+        [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+        struct RecordTimeSettingStruct
+        {
+            public byte Enable;
+            public byte Mode;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+            public byte[] Reserved1;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 7 * 3)]
+            public RecordTimeQuantumStruct[] Quantum;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 11)]
+            public byte[] Reserved2;
+        }
+        [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
         struct UserInfoStruct
         {
             public byte UserNameLength;
@@ -334,6 +355,9 @@ namespace CSharpDemo
         extern static IntPtr TelRecAPI_NetSetting(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         extern static IntPtr TelRecAPI_SMDRSetting(IntPtr Device);
+
+        [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
+        extern static IntPtr TelRecAPI_RecordTimeSetting(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         extern static IntPtr TelRecAPI_UserList(IntPtr Device);
         /*Operation*/
@@ -373,6 +397,10 @@ namespace CSharpDemo
         extern static int TelRecAPI_GetSMDRSetting(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         extern static int TelRecAPI_SetSMDRSetting(IntPtr Device, IntPtr Setting);
+        [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
+        extern static int TelRecAPI_GetRecordTimeSetting(IntPtr Device);
+        [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
+        extern static int TelRecAPI_SetRecordTimeSetting(IntPtr Device, IntPtr Setting);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         extern static int TelRecAPI_GetUserList(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
@@ -634,6 +662,28 @@ namespace CSharpDemo
             public int DataBitOption;
             public int StopBitOption;
             public int CheckBitOption;
+        }
+        public class TelRecRecordTimeQuantum
+        {
+            public bool Enable;
+            public int StartHour;
+            public int StartMinute;
+            public int EndHour;
+            public int EndMinute;
+        }
+        public class TelRecRecordTimeSetting
+        {
+            public bool Enable;
+            public int Mode;
+            public TelRecRecordTimeQuantum[] Quantum;
+            public TelRecRecordTimeSetting()
+            {
+                Quantum = new TelRecRecordTimeQuantum[21];
+                for (int i = 0; i < 21; i++)
+                {
+                    Quantum[i] = new TelRecRecordTimeQuantum();
+                }
+            }
         }
         public class TelRecUserInfo
         {
@@ -1022,6 +1072,24 @@ namespace CSharpDemo
                 CheckBitOption = SettingStruct.CheckBitOption
             };
         }
+        public static TelRecRecordTimeSetting RecordTimeSetting(IntPtr Device)
+        {
+            if (Device == IntPtr.Zero)
+                return null;
+            RecordTimeSettingStruct SettingStruct = (RecordTimeSettingStruct)Marshal.PtrToStructure(TelRecAPI_RecordTimeSetting(Device), typeof(RecordTimeSettingStruct));
+            TelRecRecordTimeSetting Setting = new TelRecRecordTimeSetting();
+            Setting.Enable = (SettingStruct.Enable > 0);
+            Setting.Mode = SettingStruct.Mode;
+            for (int i = 0; i < 21; i++)
+            {
+                Setting.Quantum[i].Enable = (SettingStruct.Quantum[i].Enable > 0);
+                Setting.Quantum[i].StartHour = SettingStruct.Quantum[i].StartHour;
+                Setting.Quantum[i].StartMinute = SettingStruct.Quantum[i].StartMinute;
+                Setting.Quantum[i].EndHour = SettingStruct.Quantum[i].EndHour;
+                Setting.Quantum[i].EndMinute = SettingStruct.Quantum[i].EndMinute;
+            }
+            return Setting;
+        }
         public static List<TelRecUserInfo> UserList(IntPtr Device)
         {
             List<TelRecUserInfo> UserList = new List<TelRecUserInfo>();
@@ -1323,6 +1391,12 @@ namespace CSharpDemo
             Errno = (TelRecErrno)TelRecAPI_SetSMDRSetting(Device, p);
             Marshal.FreeHGlobal(p);
             return Errno;
+        }
+        public static TelRecErrno GetRecordTimeSetting(IntPtr Device)
+        {
+            if (Device == IntPtr.Zero)
+                return TelRecErrno.ParameterInvalid;
+            return (TelRecErrno)TelRecAPI_GetRecordTimeSetting(Device);
         }
         public static TelRecErrno GetUserList(IntPtr Device)
         {

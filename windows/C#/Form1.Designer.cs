@@ -58,15 +58,16 @@
             this.ProgressBar = new System.Windows.Forms.ProgressBar();
             this.UploadFileButton = new System.Windows.Forms.Button();
             this.DownloadFileButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.GetDayListFromMonthDirButton = new System.Windows.Forms.Button();
             this.OffHookTestButton = new System.Windows.Forms.Button();
+            this.GetRecordTimeSettingButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // LogTextBox
             // 
             this.LogTextBox.Location = new System.Drawing.Point(466, 12);
             this.LogTextBox.Name = "LogTextBox";
-            this.LogTextBox.Size = new System.Drawing.Size(445, 305);
+            this.LogTextBox.Size = new System.Drawing.Size(445, 334);
             this.LogTextBox.TabIndex = 0;
             this.LogTextBox.Text = "";
             // 
@@ -305,7 +306,7 @@
             // 
             // GetUserListButton
             // 
-            this.GetUserListButton.Location = new System.Drawing.Point(10, 294);
+            this.GetUserListButton.Location = new System.Drawing.Point(240, 294);
             this.GetUserListButton.Name = "GetUserListButton";
             this.GetUserListButton.Size = new System.Drawing.Size(220, 23);
             this.GetUserListButton.TabIndex = 26;
@@ -315,14 +316,14 @@
             // 
             // ProgressBar
             // 
-            this.ProgressBar.Location = new System.Drawing.Point(466, 323);
+            this.ProgressBar.Location = new System.Drawing.Point(466, 352);
             this.ProgressBar.Name = "ProgressBar";
             this.ProgressBar.Size = new System.Drawing.Size(445, 23);
             this.ProgressBar.TabIndex = 27;
             // 
             // UploadFileButton
             // 
-            this.UploadFileButton.Location = new System.Drawing.Point(240, 294);
+            this.UploadFileButton.Location = new System.Drawing.Point(240, 323);
             this.UploadFileButton.Name = "UploadFileButton";
             this.UploadFileButton.Size = new System.Drawing.Size(220, 23);
             this.UploadFileButton.TabIndex = 28;
@@ -332,7 +333,7 @@
             // 
             // DownloadFileButton
             // 
-            this.DownloadFileButton.Location = new System.Drawing.Point(10, 323);
+            this.DownloadFileButton.Location = new System.Drawing.Point(10, 352);
             this.DownloadFileButton.Name = "DownloadFileButton";
             this.DownloadFileButton.Size = new System.Drawing.Size(220, 23);
             this.DownloadFileButton.TabIndex = 29;
@@ -340,19 +341,19 @@
             this.DownloadFileButton.UseVisualStyleBackColor = true;
             this.DownloadFileButton.Click += new System.EventHandler(this.DownloadFileButton_Click);
             // 
-            // button1
+            // GetDayListFromMonthDirButton
             // 
-            this.button1.Location = new System.Drawing.Point(240, 323);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(220, 23);
-            this.button1.TabIndex = 30;
-            this.button1.Text = "Download /1.txt To Memory";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.GetDayListFromMonthDirButton.Location = new System.Drawing.Point(240, 352);
+            this.GetDayListFromMonthDirButton.Name = "GetDayListFromMonthDirButton";
+            this.GetDayListFromMonthDirButton.Size = new System.Drawing.Size(220, 23);
+            this.GetDayListFromMonthDirButton.TabIndex = 30;
+            this.GetDayListFromMonthDirButton.Text = "Get Day List From Month Dir";
+            this.GetDayListFromMonthDirButton.UseVisualStyleBackColor = true;
+            this.GetDayListFromMonthDirButton.Click += new System.EventHandler(this.GetDayListFromMonthDirButton_Click);
             // 
             // OffHookTestButton
             // 
-            this.OffHookTestButton.Location = new System.Drawing.Point(10, 352);
+            this.OffHookTestButton.Location = new System.Drawing.Point(10, 323);
             this.OffHookTestButton.Name = "OffHookTestButton";
             this.OffHookTestButton.Size = new System.Drawing.Size(220, 23);
             this.OffHookTestButton.TabIndex = 31;
@@ -360,13 +361,24 @@
             this.OffHookTestButton.UseVisualStyleBackColor = true;
             this.OffHookTestButton.Click += new System.EventHandler(this.OffHookTestButton_Click);
             // 
+            // GetRecordTimeSettingButton
+            // 
+            this.GetRecordTimeSettingButton.Location = new System.Drawing.Point(10, 294);
+            this.GetRecordTimeSettingButton.Name = "GetRecordTimeSettingButton";
+            this.GetRecordTimeSettingButton.Size = new System.Drawing.Size(220, 23);
+            this.GetRecordTimeSettingButton.TabIndex = 32;
+            this.GetRecordTimeSettingButton.Text = "Get Record Time Setting";
+            this.GetRecordTimeSettingButton.UseVisualStyleBackColor = true;
+            this.GetRecordTimeSettingButton.Click += new System.EventHandler(this.GetRecordTimeSettingButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(924, 561);
+            this.ClientSize = new System.Drawing.Size(924, 406);
+            this.Controls.Add(this.GetRecordTimeSettingButton);
             this.Controls.Add(this.OffHookTestButton);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.GetDayListFromMonthDirButton);
             this.Controls.Add(this.DownloadFileButton);
             this.Controls.Add(this.UploadFileButton);
             this.Controls.Add(this.ProgressBar);
@@ -438,8 +450,9 @@
         private System.Windows.Forms.ProgressBar ProgressBar;
         private System.Windows.Forms.Button UploadFileButton;
         private System.Windows.Forms.Button DownloadFileButton;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button GetDayListFromMonthDirButton;
         private System.Windows.Forms.Button OffHookTestButton;
+        private System.Windows.Forms.Button GetRecordTimeSettingButton;
     }
 }
 
