@@ -432,6 +432,8 @@ namespace CSharpDemo
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         extern static int TelRecAPI_Dial(IntPtr Device, int Channel, byte[] PhoneNum, int PhoneNumLength);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
+        extern static int TelRecAPI_PlayAudioFile(IntPtr Device, int Channel, byte[] FileName);
+        [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         extern static int TelRecAPI_OffHook(IntPtr Device, int Channel);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         extern static int TelRecAPI_PlayerSetVolume(int Volume);
@@ -1610,6 +1612,15 @@ namespace CSharpDemo
                 return TelRecErrno.ParameterInvalid;
             byte[] PhoneNumBytes = Encoding.ASCII.GetBytes(PhoneNum);
             return (TelRecErrno)TelRecAPI_Dial(Device, Channel, PhoneNumBytes, PhoneNumBytes.Length);
+        }
+        public static TelRecErrno PlayAudioFile(IntPtr Device, int Channel, string FileName)
+        {
+            if (Device == IntPtr.Zero)
+                return TelRecErrno.ParameterInvalid;
+            if (string.IsNullOrEmpty(FileName))
+                return TelRecErrno.ParameterInvalid;
+            byte[] FileNameBytes = Encoding.ASCII.GetBytes(FileName);
+            return (TelRecErrno)TelRecAPI_PlayAudioFile(Device, Channel, FileNameBytes);
         }
         public static TelRecErrno OffHook(IntPtr Device, int Channel)
         {

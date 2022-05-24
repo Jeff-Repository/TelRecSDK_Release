@@ -24,6 +24,7 @@ namespace CSharpDemo
                 case TelRecInterface.TelRecEventType.ConnectStatusChanged:
                     {
                         Console.WriteLine("Device connect status changed : " + TelRecInterface.ConnectStatus(Device));
+                        //MessageBox.Show("Device connect status changed : " + TelRecInterface.ConnectStatus(Device));
                         break;
                     }
                 case TelRecInterface.TelRecEventType.StorageStatusChanged:
