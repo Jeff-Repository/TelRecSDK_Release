@@ -117,7 +117,7 @@ namespace CSharpDemo
         {
             if (Device == IntPtr.Zero)
             {
-                LogTextBox.AppendText("Device cannot be empty");
+                LogTextBox.AppendText("Device cannot be empty\r\n");
                 return false;
             }
             return true;
@@ -158,13 +158,13 @@ namespace CSharpDemo
             LogTextBox.Clear();
             if (Device != IntPtr.Zero)
             {
-                LogTextBox.AppendText("The device has already been created");
+                LogTextBox.AppendText("The device has already been created\r\n");
                 return;
             }
             string DeviceID = DeviceIDTextBox.Text;
             if (string.IsNullOrEmpty(DeviceID))
             {
-                LogTextBox.AppendText("Device ID cannot be empty");
+                LogTextBox.AppendText("Device ID cannot be empty\r\n");
                 return;
             }
             Device = TelRecInterface.CreateDevice(DeviceID);
@@ -176,7 +176,7 @@ namespace CSharpDemo
             }
             else
             {
-                LogTextBox.AppendText("Device created failed, Please check the device ID");
+                LogTextBox.AppendText("Device created failed, Please check the device ID\r\n");
             }
         }
 
@@ -198,19 +198,19 @@ namespace CSharpDemo
             UserName = UserNameTextBox.Text;
             if (string.IsNullOrEmpty(UserName))
             {
-                LogTextBox.AppendText("UserName Invalid");
+                LogTextBox.AppendText("UserName Invalid\r\n");
                 return;
             }
             if(UserName.Length > TelRecInterface.UserNameLengthMax)
             {
-                LogTextBox.AppendText("UserName Invalid");
+                LogTextBox.AppendText("UserName Invalid\r\n");
                 return;
             }
             /*Check Password*/
             Password = PasswordTextBox.Text;
             if (string.IsNullOrEmpty(Password))
             {
-                LogTextBox.AppendText("Password Invalid");
+                LogTextBox.AppendText("Password Invalid\r\n");
                 return;
             }
             if (!RemoteLogin)
@@ -219,26 +219,26 @@ namespace CSharpDemo
                 IPaddress = IPaddressTextBox.Text;
                 if (string.IsNullOrEmpty(IPaddress))
                 {
-                    LogTextBox.AppendText("IPaddress Invalid");
+                    LogTextBox.AppendText("IPaddress Invalid\r\n");
                     return;
                 }
                 /*Check Port*/
                 if (!int.TryParse(PortTextBox.Text, out Port))
                 {
-                    LogTextBox.AppendText("Port Invalid");
+                    LogTextBox.AppendText("Port Invalid\r\n");
                     return;
                 }
                 if (Port > 65535)
                 {
-                    LogTextBox.AppendText("Port Invalid");
+                    LogTextBox.AppendText("Port Invalid\r\n");
                     return;
                 }
             }
             TelRecInterface.TelRecErrno Errno = TelRecInterface.Login(Device, IPaddress, (ushort)Port, UserName, Password, RemoteLoginCheckBox.Checked);
             if (Errno == TelRecInterface.TelRecErrno.Succeed)
-                LogTextBox.AppendText("Login successfully");
+                LogTextBox.AppendText("Login successfully\r\n");
             else
-                LogTextBox.AppendText("Login failed, Errno : " + Errno);
+                LogTextBox.AppendText("Login failed, Errno : " + Errno + "\r\n");
         }
 
         private void LogoutButton_Click(object sender, EventArgs e)
@@ -246,7 +246,7 @@ namespace CSharpDemo
             if (!CheckDevice())
                 return;
             TelRecInterface.Logout(Device);
-            LogTextBox.AppendText("Logout successfully");
+            LogTextBox.AppendText("Logout successfully\r\n");
         }
 
         private void CreateHeartbeatThreadButton_Click(object sender, EventArgs e)
@@ -273,7 +273,7 @@ namespace CSharpDemo
                 LogTextBox.AppendText("Free : " + Status.Free + " MB\r\n");
             }
             else
-                LogTextBox.AppendText("Get device storage status failed, Errno : " + Errno);
+                LogTextBox.AppendText("Get device storage status failed, Errno : " + Errno + "\r\n");
         }
 
         private void GetNetStatusButton_Click(object sender, EventArgs e)
@@ -291,7 +291,7 @@ namespace CSharpDemo
                 LogTextBox.AppendText("IPaddress : " + Status.IPaddress + "\r\n");
             }
             else
-                LogTextBox.AppendText("Get device net status failed, Errno : " + Errno);
+                LogTextBox.AppendText("Get device net status failed, Errno : " + Errno + "\r\n");
         }
 
         private void GetTimeButton_Click(object sender, EventArgs e)
@@ -304,10 +304,10 @@ namespace CSharpDemo
             {
                 TelRecInterface.TelRecDateTime Time = TelRecInterface.DateTime(Device);
                 LogTextBox.AppendText("Get device time snapshoot successfully\r\n");
-                LogTextBox.AppendText("Device Time : " + Time.ToString());
+                LogTextBox.AppendText("Device Time : " + Time.ToString() + "\r\n");
             }
             else
-                LogTextBox.AppendText("Get device time snapshoot failed, Errno : " + Errno);
+                LogTextBox.AppendText("Get device time snapshoot failed, Errno : " + Errno + "\r\n");
         }
 
         private void GetPlayBackFileListButton_Click(object sender, EventArgs e)
@@ -326,7 +326,7 @@ namespace CSharpDemo
                 }
             }
             else
-                LogTextBox.AppendText("Get playback file list failed, Errno : " + Errno);
+                LogTextBox.AppendText("Get playback file list failed, Errno : " + Errno + "\r\n");
         }
 
         private void GetBaseSettingButton_Click(object sender, EventArgs e)
@@ -353,7 +353,7 @@ namespace CSharpDemo
                 LogTextBox.AppendText("KeyRecordEnd : " + Setting.KeyRecordEnd + "\r\n");
             }
             else
-                LogTextBox.AppendText("Get device base setting failed, Errno : " + Errno);
+                LogTextBox.AppendText("Get device base setting failed, Errno : " + Errno + "\r\n");
         }
 
         private void GetChannelSettingButton_Click(object sender, EventArgs e)
@@ -375,7 +375,7 @@ namespace CSharpDemo
                 LogTextBox.AppendText("......\r\n");
             }
             else
-                LogTextBox.AppendText("Get device channel setting failed, Errno : " + Errno);
+                LogTextBox.AppendText("Get device channel setting failed, Errno : " + Errno + "\r\n");
         }
 
         private void GetKeyControlSettingButton_Click(object sender, EventArgs e)
@@ -394,7 +394,7 @@ namespace CSharpDemo
                 LogTextBox.AppendText("......\r\n");
             }
             else
-                LogTextBox.AppendText("Get device key control setting failed, Errno : " + Errno);
+                LogTextBox.AppendText("Get device key control setting failed, Errno : " + Errno + "\r\n");
         }
 
         private void GetNetSettingButton_Click(object sender, EventArgs e)
@@ -416,7 +416,7 @@ namespace CSharpDemo
                 LogTextBox.AppendText("EnableCloud : " + Setting.EnableCloud + "\r\n");
             }
             else
-                LogTextBox.AppendText("Get device net setting failed, Errno : " + Errno);
+                LogTextBox.AppendText("Get device net setting failed, Errno : " + Errno + "\r\n");
         }
 
         private void GetSMDRSettingButton_Click(object sender, EventArgs e)
@@ -441,7 +441,7 @@ namespace CSharpDemo
                 LogTextBox.AppendText("......\r\n");
             }
             else
-                LogTextBox.AppendText("Get device SMDR setting failed, Errno : " + Errno);
+                LogTextBox.AppendText("Get device SMDR setting failed, Errno : " + Errno + "\r\n");
         }
         
         private void GetRecordTimeSettingButton_Click(object sender, EventArgs e)
@@ -470,7 +470,7 @@ namespace CSharpDemo
                 }
             }
             else
-                LogTextBox.AppendText("Get device record time setting failed, Errno : " + Errno);
+                LogTextBox.AppendText("Get device record time setting failed, Errno : " + Errno + "\r\n");
         }
 
         private void GetUserListButton_Click(object sender, EventArgs e)
@@ -490,7 +490,7 @@ namespace CSharpDemo
                 }
             }
             else
-                LogTextBox.AppendText("Get user list failed, Errno : " + Errno);
+                LogTextBox.AppendText("Get user list failed, Errno : " + Errno + "\r\n");
         }
 
         private void OffHookTestButton_Click(object sender, EventArgs e)
@@ -527,7 +527,7 @@ namespace CSharpDemo
                         if (Errno == TelRecInterface.TelRecErrno.Succeed)
                             LogTextBox.AppendText("Upload successfully\r\n");
                         else
-                            LogTextBox.AppendText("Upload failed, Errno : " + Errno);
+                            LogTextBox.AppendText("Upload failed, Errno : " + Errno + "\r\n");
                     });
                 });
                 UploadFileThread.Start();
@@ -579,10 +579,10 @@ namespace CSharpDemo
                     {
                         LogTextBox.AppendText("Download successfully\r\n");
                         LogTextBox.AppendText("1.txt:\r\n\r\n");
-                        LogTextBox.AppendText(Encoding.UTF8.GetString(FileBuffer));
+                        LogTextBox.AppendText(Encoding.UTF8.GetString(FileBuffer) + "\r\n");
                     }
                     else
-                        LogTextBox.AppendText("Download failed, Errno : " + Errno);
+                        LogTextBox.AppendText("Download failed, Errno : " + Errno + "\r\n");
                 });
             });
             DownloadFileThread.Start();
@@ -596,6 +596,29 @@ namespace CSharpDemo
             {
                 if(Array[i] > 0)
                     Console.WriteLine(i.ToString());
+            }
+        }
+
+        private void GetRecordInfoButton_Click(object sender, EventArgs e)
+        {
+            TelRecInterface.TelRecCurrentRecordInfo Info;
+            TelRecInterface.TelRecErrno Errno = TelRecInterface.GetCurrentRecordInfo(Device, 0, out Info);
+            if (Errno == TelRecInterface.TelRecErrno.Succeed)
+            {
+                LogTextBox.AppendText("Get Channel 0 Current Record Info successfully\r\n");
+                LogTextBox.AppendText("Year: " + Info.Year + "\r\n");
+                LogTextBox.AppendText("Month: " + Info.Month + "\r\n");
+                LogTextBox.AppendText("Day: " + Info.Day + "\r\n");
+                LogTextBox.AppendText("Hour: " + Info.Hour + "\r\n");
+                LogTextBox.AppendText("Minutes: " + Info.Minutes + "\r\n");
+                LogTextBox.AppendText("Seconds: " + Info.Seconds + "\r\n");
+                LogTextBox.AppendText("RecordID: " + Info.RecordID + "\r\n");
+                LogTextBox.AppendText("RecordType: " + Info.RecordType + "\r\n");
+                LogTextBox.AppendText("PhoneNum: " + Info.PhoneNum + "\r\n");
+            }
+            else
+            {
+                LogTextBox.AppendText("Get Channel 0 Current Record Info, Errno : " + Errno + "\r\n");
             }
         }
     }

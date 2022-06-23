@@ -61,6 +61,7 @@
             this.GetDayListFromMonthDirButton = new System.Windows.Forms.Button();
             this.OffHookTestButton = new System.Windows.Forms.Button();
             this.GetRecordTimeSettingButton = new System.Windows.Forms.Button();
+            this.GetRecordInfoButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // LogTextBox
@@ -371,11 +372,22 @@
             this.GetRecordTimeSettingButton.UseVisualStyleBackColor = true;
             this.GetRecordTimeSettingButton.Click += new System.EventHandler(this.GetRecordTimeSettingButton_Click);
             // 
+            // GetRecordInfoButton
+            // 
+            this.GetRecordInfoButton.Location = new System.Drawing.Point(10, 381);
+            this.GetRecordInfoButton.Name = "GetRecordInfoButton";
+            this.GetRecordInfoButton.Size = new System.Drawing.Size(220, 23);
+            this.GetRecordInfoButton.TabIndex = 33;
+            this.GetRecordInfoButton.Text = "Get Channel 0 Current Record Info";
+            this.GetRecordInfoButton.UseVisualStyleBackColor = true;
+            this.GetRecordInfoButton.Click += new System.EventHandler(this.GetRecordInfoButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(924, 406);
+            this.ClientSize = new System.Drawing.Size(924, 456);
+            this.Controls.Add(this.GetRecordInfoButton);
             this.Controls.Add(this.GetRecordTimeSettingButton);
             this.Controls.Add(this.OffHookTestButton);
             this.Controls.Add(this.GetDayListFromMonthDirButton);
@@ -453,6 +465,7 @@
         private System.Windows.Forms.Button GetDayListFromMonthDirButton;
         private System.Windows.Forms.Button OffHookTestButton;
         private System.Windows.Forms.Button GetRecordTimeSettingButton;
+        private System.Windows.Forms.Button GetRecordInfoButton;
     }
 }
 

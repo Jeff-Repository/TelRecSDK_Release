@@ -296,6 +296,21 @@ namespace CSharpDemo
             public byte HasWavFile;
             public ushort Offset;
         }
+        [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+        struct CurrentRecordInfoStruct
+        {
+            public byte Year;
+            public byte Month;
+            public byte Day;
+            public byte Hour;
+            public byte Minutes;
+            public byte Seconds;
+            public ushort RecordID;
+            public byte RecordType;
+            public byte PhoneNumLength;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = PhoneNumLengthMax)]
+            public byte[] PhoneNum;
+        }
         #endregion
 
         #region C++ API
@@ -371,6 +386,8 @@ namespace CSharpDemo
         extern static int TelRecAPI_GetStorageStatus(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         extern static int TelRecAPI_GetNetStatus(IntPtr Device);
+        [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
+        extern static int TelRecAPI_GetCurrentRecordInfo(IntPtr Device, int Channel, IntPtr Info);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         extern static int TelRecAPI_GetTime(IntPtr Device);
         [DllImport(TelRecSDK_DLL_Path, CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
@@ -723,6 +740,18 @@ namespace CSharpDemo
             public int Channel;
             public bool HasWavFile;
             public int Offset;
+        }
+        public class TelRecCurrentRecordInfo
+        {
+            public int Year;
+            public int Month;
+            public int Day;
+            public int Hour;
+            public int Minutes;
+            public int Seconds;
+            public int RecordID;
+            public int RecordType;
+            public string PhoneNum;
         }
         #endregion
 
@@ -1165,6 +1194,33 @@ namespace CSharpDemo
             if (Device == IntPtr.Zero)
                 return TelRecErrno.ParameterInvalid;
             return (TelRecErrno)TelRecAPI_GetNetStatus(Device);
+        }
+        public static TelRecErrno GetCurrentRecordInfo(IntPtr Device, int Channel, out TelRecCurrentRecordInfo Info)
+        {
+            TelRecErrno Errno;
+            Info = null;
+            if (Device == IntPtr.Zero)
+                return TelRecErrno.ParameterInvalid;
+            IntPtr p = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(CurrentRecordInfoStruct)));
+            Errno = (TelRecErrno)TelRecAPI_GetCurrentRecordInfo(Device, Channel, p);
+            if(Errno == TelRecErrno.Succeed)
+            {
+                CurrentRecordInfoStruct InfoStruct = (CurrentRecordInfoStruct)Marshal.PtrToStructure(p, typeof(CurrentRecordInfoStruct));
+                Info = new TelRecCurrentRecordInfo
+                {
+                    Year = InfoStruct.Year,
+                    Month = InfoStruct.Month,
+                    Day = InfoStruct.Day,
+                    Hour = InfoStruct.Hour,
+                    Minutes = InfoStruct.Minutes,
+                    Seconds = InfoStruct.Seconds,
+                    RecordID = InfoStruct.RecordID,
+                    RecordType = InfoStruct.RecordType,
+                    PhoneNum = Encoding.ASCII.GetString(InfoStruct.PhoneNum, 0, InfoStruct.PhoneNumLength)
+                };
+            }
+            Marshal.FreeHGlobal(p);
+            return Errno;
         }
         public static TelRecErrno GetTime(IntPtr Device)
         {

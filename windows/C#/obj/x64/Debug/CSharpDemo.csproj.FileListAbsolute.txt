@@ -8,3 +8,4 @@ E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x64\Debug\CSharpDemo.csproj.G
 E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x64\Debug\CSharpDemo.csproj.CoreCompileInputs.cache
 E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x64\Debug\CSharpDemo.exe
 E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x64\Debug\CSharpDemo.pdb
+E:\Project\TelRec\TelRecSDK_Release\windows\C#\obj\x64\Debug\CSharpDemo.csproj.AssemblyReference.cache
