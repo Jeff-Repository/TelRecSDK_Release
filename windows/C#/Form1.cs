@@ -495,7 +495,7 @@ namespace CSharpDemo
 
         private void OffHookTestButton_Click(object sender, EventArgs e)
         {
-            TelRecInterface.OffHook(Device, 0);
+            TelRecInterface.OffHook(Device, 0, 2000);
         }
 
         private void UploadFileButton_Click(object sender, EventArgs e)
